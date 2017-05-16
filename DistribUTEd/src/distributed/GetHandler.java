@@ -10,10 +10,11 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.stream.Collectors;
 
 /**
  *
- * @author diego
+ * @author dordonez@ute.edu.ec
  */
 public class GetHandler implements HttpHandler {
 
@@ -21,17 +22,24 @@ public class GetHandler implements HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange he) throws IOException {
+    public void handle(HttpExchange hEx) throws IOException {
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpExchange.html
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/package-summary.html
         
-        InputStream is = he.getRequestBody();
+        String sLog = "";
+        sLog += hEx.getRequestMethod();
+        sLog += hEx.getRequestHeaders().keySet().stream().collect(Collectors.joining(", "));
+        //sLog += hEx.getRequestHeaders().values().stream().collect(Collectors.joining(", "));
+        System.out.println(sLog);
+        /*
+        InputStream is = hEx.getRequestBody();
         //read(is); // .. read the request body
         String response = "This is the response";
-        he.sendResponseHeaders(200, response.length());
-        OutputStream os = he.getResponseBody();
+        hEx.sendResponseHeaders(200, response.length());
+        OutputStream os = hEx.getResponseBody();
         os.write(response.getBytes());
         os.close();
+        */
     }
     
 }

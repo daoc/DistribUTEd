@@ -22,7 +22,7 @@ public class Director {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(8888), 0);
             server.createContext("/distributed/get", new GetHandler());
-            server.setExecutor(null); // creates a default executor
+            //server.setExecutor(null); // creates a default executor
             server.start();
         } catch (IOException ex) {
             Logger.getLogger(Director.class.getName()).log(Level.SEVERE, null, ex);
