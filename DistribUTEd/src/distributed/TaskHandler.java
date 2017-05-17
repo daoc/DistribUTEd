@@ -16,15 +16,31 @@ import java.util.stream.Collectors;
  *
  * @author dordonez@ute.edu.ec
  */
-public class GetHandler implements HttpHandler {
+public class TaskHandler implements HttpHandler {
 
-    public GetHandler() {
+    public TaskHandler() {
     }
 
     @Override
     public void handle(HttpExchange hEx) throws IOException {
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpExchange.html
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/package-summary.html
+        
+        
+        String method = hEx.getRequestMethod();
+        switch(method) {
+            case "GET":
+                System.out.println("GET");
+                break;
+            case "POST":
+                System.out.println("POST");
+                break;
+            case "PUT":
+                System.out.println("PUT");
+                break;
+            default:
+                System.out.println("NO soportado");
+        }
         
         String sLog = "";
         sLog += hEx.getRequestMethod();

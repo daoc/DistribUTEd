@@ -21,7 +21,7 @@ public class Director {
     public Director init() {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(8888), 0);
-            server.createContext("/distributed/get", new GetHandler());
+            server.createContext("/distributed/task", new TaskHandler());
             //server.setExecutor(null); // creates a default executor
             server.start();
         } catch (IOException ex) {
