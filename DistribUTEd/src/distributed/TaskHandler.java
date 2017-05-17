@@ -10,6 +10,8 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -26,9 +28,7 @@ public class TaskHandler implements HttpHandler {
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpExchange.html
         //https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/package-summary.html
         
-        
-        String method = hEx.getRequestMethod();
-        switch(method) {
+        switch(hEx.getRequestMethod()) {
             case "GET":
                 System.out.println("GET");
                 break;
@@ -38,6 +38,9 @@ public class TaskHandler implements HttpHandler {
             case "PUT":
                 System.out.println("PUT");
                 break;
+            case "OPTIONS":
+                System.out.println("OPTIONS");
+                break;               
             default:
                 System.out.println("NO soportado");
         }
@@ -56,6 +59,25 @@ public class TaskHandler implements HttpHandler {
         os.write(response.getBytes());
         os.close();
         */
+    }
+    
+    public void doGet(HttpExchange hEx) {
+        try {
+            Task task = getTask(hEx);
+            
+            hEx.getResponseHeaders().add("Task", "OK");
+            hEx.sendResponseHeaders(200, 0);
+        } catch (IOException ex) {
+            Logger.getLogger(TaskHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Task getTask(HttpExchange hEx) {
+        String inst = ".setAtributos(9*9, 1, 9).setMetaAptitud(0).setMaxTiempoCalculo(0, 4, 0).setNumIndividuos(100000).setParamReset(10, 25).setMetodoGeneracion(new GeneracionRestringida(new RestriccionSudoku(Sudoku.leeArchivoSudokus(\"0.txt\").get(0)))).setFuncionAptitud(new FuncionAptitudSudoku())";
+        Task task = new Task(hEx.getLocalAddress().getHostName(), hEx.getLocalAddress().getPort(), 
+                hEx.getRemoteAddress().getHostName(), hEx.getRemoteAddress().getPort(),
+                "0.txt", "0", inst, null);
+        return task;
     }
     
 }
