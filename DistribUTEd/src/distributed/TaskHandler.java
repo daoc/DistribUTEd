@@ -8,12 +8,9 @@ package distributed;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -65,34 +62,25 @@ public class TaskHandler implements HttpHandler {
     
     public void doGet(HttpExchange hEx) {
         try {
-            System.out.println("GETXX");
+            System.out.println("GET");
             Task task = getTask(hEx);
-            System.out.println("1");
+            hEx.getResponseHeaders().add("Content-Type", "application/octet-stream");
             hEx.getResponseHeaders().add("Task", "OK");
-            System.out.println("2");
             hEx.sendResponseHeaders(200, 0);
-            System.out.println("3");
             ObjectOutputStream oos = new ObjectOutputStream(hEx.getResponseBody());
-            System.out.println("4");
             oos.writeObject(task);
-            System.out.println("5");
             oos.flush();
-            System.out.println("6");
             hEx.close();
-            System.out.println("YA");
         } catch (IOException ex) {
             Logger.getLogger(TaskHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public Task getTask(HttpExchange hEx) {
-        System.out.println("10");
         String inst = ".setAtributos(9*9, 1, 9).setMetaAptitud(0).setMaxTiempoCalculo(0, 4, 0).setNumIndividuos(100000).setParamReset(10, 25).setMetodoGeneracion(new GeneracionRestringida(new RestriccionSudoku(Sudoku.leeArchivoSudokus(\"0.txt\").get(0)))).setFuncionAptitud(new FuncionAptitudSudoku())";
-        System.out.println("11");
         Task task = new Task(hEx.getLocalAddress().getHostName(), hEx.getLocalAddress().getPort(), 
                 hEx.getRemoteAddress().getHostName(), hEx.getRemoteAddress().getPort(),
                 "0.txt", "0", inst, null);
-        System.out.println("12");
         return task;
     }
     
