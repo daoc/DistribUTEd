@@ -70,6 +70,7 @@ public class Worker {
             engine.eval(script);
             Invocable invocable = (Invocable) engine;
             Distributable dist = (Distributable) invocable.invokeFunction("build", task);
+            dist.configureForCall();
             ecs.submit(dist);
         } catch (Exception ex) {
             ex.printStackTrace();
