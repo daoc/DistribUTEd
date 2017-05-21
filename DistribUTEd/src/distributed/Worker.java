@@ -5,6 +5,7 @@
  */
 package distributed;
 
+import java.io.File;
 import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +18,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 /**
@@ -26,6 +28,8 @@ import javax.xml.bind.Unmarshaller;
 public class Worker {
     private ExecutorService pool;
     private ExecutorCompletionService<Distributable> ecs;
+    private Scripting exec;
+    private String configFile;
     
     private int numHilos = 5;//esto debe venir de otro lado
     
@@ -34,7 +38,7 @@ public class Worker {
     
     public static void main(String[] args) throws Exception {
         Worker worker = new Worker();
-        worker.initECS();
+        worker.init(args);
         
         
         URL url = new URL("http://localhost:8888/distributed/task");
@@ -55,9 +59,25 @@ public class Worker {
         worker.addTask(task);
     }    
 
-    public void initECS() {
-        pool = Executors.newFixedThreadPool(numHilos);
-        ecs = new ExecutorCompletionService<>(pool);
+    public void init(String[] args) {
+        try {
+            if(args == null) {
+                configFile = "config.xml";
+            } else {
+                configFile = args[0];
+            }
+            JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);           
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Config config = (Config) jaxbUnmarshaller.unmarshal(new File(configFile));
+            
+            
+            pool = Executors.newFixedThreadPool(numHilos);
+            ecs = new ExecutorCompletionService<>(pool);
+            exec = new Scripting();
+            exec.init();
+        } catch (JAXBException ex) {
+            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void addTask(Task task) {
