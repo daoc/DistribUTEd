@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package distributed;
 
 import java.io.File;
@@ -36,9 +32,10 @@ public class Worker {
     private ScriptEngineManager engineManager = new ScriptEngineManager();
     private ScriptEngine engine = engineManager.getEngineByName("nashorn");
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Worker worker = new Worker();
         worker.init(args);
+        /*
         
         
         URL url = new URL("http://localhost:8888/distributed/task");
@@ -57,11 +54,12 @@ public class Worker {
         
         System.out.println(task.task);
         worker.addTask(task);
+*/
     }    
 
     public void init(String[] args) {
         try {
-            if(args == null) {
+            if(args.length == 0) {
                 configFile = "config.xml";
             } else {
                 configFile = args[0];
@@ -70,6 +68,7 @@ public class Worker {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             Config config = (Config) jaxbUnmarshaller.unmarshal(new File(configFile));
             
+            System.out.println(config);
             
             pool = Executors.newFixedThreadPool(numHilos);
             ecs = new ExecutorCompletionService<>(pool);

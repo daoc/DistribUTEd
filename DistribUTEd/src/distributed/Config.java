@@ -1,17 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package distributed;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author diego
+ * @author dordonez@ute.edu.ec
  */
 @XmlRootElement
 public class Config {
+    @XmlElementWrapper(name = "packages")
+    public List<String> impPackage;
     
+    public String distImp;
+    
+    @Override
+    public String toString() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("distImp: ");
+        buffer.append(distImp);
+        buffer.append(" packages: ");
+        buffer.append(impPackage.stream().collect(Collectors.joining(", ")));
+        return buffer.toString();
+    }
 }

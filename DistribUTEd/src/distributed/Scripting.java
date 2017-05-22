@@ -7,6 +7,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.xml.bind.JAXB;
 
 /**
  *
@@ -16,15 +17,14 @@ public class Scripting {
 
     public final ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
     public final Invocable invocable = (Invocable) engine;
+    public Config config;
     
     public void init() {
         String importPackage = "importPackage(Packages.%s);";
-        String buildFunction = "";
-        buildFunction += "var build = function(task) { ";
-        buildFunction += "obj = new %s(task);";
-        buildFunction += "return obj;}";
+        String buildFunction = "var build = function(task) { obj = new %s(task); return obj;}";
         try {
             engine.eval("load('nashorn:mozilla_compat.js');");
+            
             
         } catch (ScriptException ex) {
             Logger.getLogger(Scripting.class.getName()).log(Level.SEVERE, null, ex);
@@ -32,7 +32,7 @@ public class Scripting {
     }
     
     public void loadScript(String script) {
-        
+        //JAXB.C
     }
     
 }

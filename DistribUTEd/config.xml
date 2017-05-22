@@ -2,8 +2,8 @@
 <config>
     
     <packages>
-        <package>daoc.age</package>
-        <package>daoc.age.ejemplos.sudoku</package>
+        <impPackage>daoc.age</impPackage>
+        <impPackage>daoc.age.ejemplos.sudoku</impPackage>
     </packages>
     
     <distImp>Poblacion</distImp>
