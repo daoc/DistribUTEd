@@ -8,4 +8,8 @@
     
     <distImp>Poblacion</distImp>
     
+    <numHilos>0</numHilos>
+    
+    <taskServerUrl>http://localhost:8888/distributed/task</taskServerUrl>
+    
 </config>

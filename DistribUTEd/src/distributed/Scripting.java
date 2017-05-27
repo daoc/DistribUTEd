@@ -19,13 +19,16 @@ public class Scripting {
     public final Invocable invocable = (Invocable) engine;
     public Config config;
     
-    public void init() {
+    public void init(Config config) {
+        this.config = config;
         String importPackage = "importPackage(Packages.%s);";
         String buildFunction = "var build = function(task) { obj = new %s(task); return obj;}";
         try {
             engine.eval("load('nashorn:mozilla_compat.js');");
-            
-            
+            for(String pack : config.impPackage) {
+                engine.eval(String.format(importPackage, pack));
+            }
+            engine.eval(String.format(buildFunction, config.distImp));
         } catch (ScriptException ex) {
             Logger.getLogger(Scripting.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -17,10 +17,18 @@ public class Config {
     
     public String distImp;
     
+    public int numHilos;
+    
+    public String taskServerUrl;
+    
     @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("distImp: ");
+        buffer.append(" numHilos: ");
+        buffer.append(numHilos);    
+        buffer.append(" taskServerUrl: ");
+        buffer.append(taskServerUrl);        
+        buffer.append(" distImp: ");
         buffer.append(distImp);
         buffer.append(" packages: ");
         buffer.append(impPackage.stream().collect(Collectors.joining(", ")));
